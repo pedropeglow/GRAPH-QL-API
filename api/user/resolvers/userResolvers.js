@@ -6,10 +6,9 @@ const userResolvers = {
     DOCENTE: "DOCENTE",
     COORDENACAO: "COORDENACAO",
   },
-
   DateTime: new GraphQLScalarType({
     name: "DateTime",
-    description: "string de data e hora no fromato ISO-8601",
+    description: "string de data e hora no formato ISO-8601",
     serialize: (value) => value.toISOString(),
     parseValue: (value) => new Date(value),
     parseLiteral: (ast) => new Date(ast.value),
@@ -22,10 +21,11 @@ const userResolvers = {
   Mutation: {
     adicionaUser: async (root, { user }, { dataSources }) =>
       dataSources.usersAPI.adicionaUser(user),
-
-    atualizaUser: async (root, novosDados, { dataSources }) =>
-      dataSources.usersAPI.atualizaUser(novosDados),
-    deletaUser: (root, { id }, { dataSources }) =>
+    atualizaUser: async (root, novosDados, { dataSources }) => {
+      console.log(novosDados);
+      return dataSources.usersAPI.atualizaUser(novosDados);
+    },
+    deletaUser: async (root, { id }, { dataSources }) =>
       dataSources.usersAPI.deletaUser(id),
   },
 };

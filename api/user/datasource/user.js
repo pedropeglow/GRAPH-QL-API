@@ -1,9 +1,13 @@
 const { RESTDataSource } = require("apollo-datasource-rest");
 
-class UserAPI extends RESTDataSource {
+class UsersAPI extends RESTDataSource {
   constructor() {
     super();
     this.baseURL = "http://localhost:3000";
+    this.respostaCustom = {
+      code: 201,
+      mensagem: "operação feita com sucesso",
+    };
   }
 
   async getUsers() {
@@ -41,15 +45,18 @@ class UserAPI extends RESTDataSource {
       role: role[0].id,
     });
     return {
-      ...novosDados.user,
-      role: role[0],
+      ...this.respostaCustom,
+      userAtualizado: {
+        ...novosDados.user,
+        role: role[0],
+      },
     };
   }
 
   async deletaUser(id) {
     await this.delete(`users/${id}`);
-    return id;
+    return this.respostaCustom;
   }
 }
 
-module.exports = UserAPI;
+module.exports = UsersAPI;
